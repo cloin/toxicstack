@@ -1,11 +1,10 @@
 # toxicstack
-A podman compose stack with an app fronted by toxiproxy
 
 Httpbin is a simple HTTP request/response service, often used as a test or debugging tool, that accepts requests and, in turn, sends back responses with specified parameters, making it a valuable tool for testing client HTTP connections. 
 
 On the other hand, Toxiproxy is a TCP proxy designed to simulate network and system conditions for automated tests, enabling developers to test how their application handles various network failures and slowdowns.
 
-This podman compose sets up both containers and exposes required ports to proxy clients through toxiproxy to httpbin allowing you to create and test and monitor network conditions.
+This podman compose sets up both containers and exposes required ports to proxy clients through toxiproxy to httpbin allowing you to create, test and monitor network conditions affecting your app.
 
 # Usage
 

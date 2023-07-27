@@ -5,7 +5,7 @@ This directory contains the necessary configuration files and scripts to set up 
 ## Directory Structure
 
 - `checks.d/`: Contains custom Python scripts for Datadog's Agent to execute and collect metrics.
-    - `toxicapp.py`: This is the custom check script for the ToxicStack application. It calculates the response time from the ToxicStack application's `/get` endpoint.
+    - `toxicstack.py`: This is the custom check script for the ToxicStack application. It calculates the response time from the ToxicStack application's `/get` endpoint.
 - `conf.d/`: Contains configuration data for the custom check scripts.
     - `toxicstack.d/conf.yaml`: This file provides the configuration for the custom check script.
 
@@ -22,10 +22,10 @@ Follow these steps to set up Datadog monitoring for ToxicStack:
 
 2. **Install Datadog Agent**: If not already installed, [follow these instructions](https://docs.datadoghq.com/agent/basic_agent_usage/?tab=agentv6v7) to install and configure the Datadog agent.
 
-3. **Copy custom check script and configuration files**: Copy the `toxicapp.py` script to the `checks.d/` directory in the Datadog Agent's configuration directory (usually `/etc/datadog-agent/`). Also, copy the `toxicstack.d/` directory to the `conf.d/` directory in the Datadog Agent's configuration directory.
+3. **Copy custom check script and configuration files**: Copy the `toxicstack.py` script to the `checks.d/` directory in the Datadog Agent's configuration directory (usually `/etc/datadog-agent/`). Also, copy the `toxicstack.d/` directory to the `conf.d/` directory in the Datadog Agent's configuration directory.
 
     ```
-    sudo cp checks.d/toxicapp.py /etc/datadog-agent/checks.d/
+    sudo cp checks.d/toxicstack.py /etc/datadog-agent/checks.d/
     sudo cp -r conf.d/toxicstack.d /etc/datadog-agent/conf.d/
     ```
 
@@ -47,7 +47,7 @@ Follow these steps to set up Datadog monitoring for ToxicStack:
     sudo datadog-agent status | grep toxic
     ```
 
-    Look for `toxicapp` under the `Running Checks` section.
+    Look for `toxicstack` under the `Running Checks` section.
 
 6. **View your metrics**: Log in to your Datadog dashboard, navigate to the "Metrics" section, and search for the `toxicstack.response_time` metric. It may take a few minutes for the metrics to appear.
 

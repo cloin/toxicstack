@@ -6,6 +6,17 @@ On the other hand, Toxiproxy is a TCP proxy designed to simulate network and sys
 
 This podman compose sets up both containers and exposes required ports to proxy clients through toxiproxy to httpbin allowing you to create, test and monitor network conditions affecting your app.
 
+# Setup
+
+**1. Install podman and podman-compose**
+
+**2. Clone the repo and cd into it the directory**
+
+**3. Start the stack with:**
+```bash
+podman-compose up -d
+```
+
 # Usage
 
 **1. Create the proxy if it doesn't exist**

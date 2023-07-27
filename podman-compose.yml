@@ -10,5 +10,3 @@ services:
     ports:
       - "8474:8474"
       - "8001:8001"
-    links:
-      - httpbin

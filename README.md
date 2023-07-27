@@ -1,4 +1,4 @@
-# toxicstack
+# ToxicStack
 
 ToxicStack is a small demo stack. It contains a demo app (httpbin) and a proxy (toxiproxy) that can be configured to simulate a number of network conditions.
 

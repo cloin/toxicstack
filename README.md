@@ -1,6 +1,6 @@
 # toxicstack
 
-ToxicStack is a small demo stack. It contains a demo app (httpbin) and a proxy (toxiproxy) that can be configured simulate a number of network conditions.
+ToxicStack is a small demo stack. It contains a demo app (httpbin) and a proxy (toxiproxy) that can be configured to simulate a number of network conditions.
 
 Httpbin is a simple HTTP request/response service, often used as a test or debugging tool, that accepts requests and, in turn, sends back responses with specified parameters, making it a valuable tool for testing client HTTP connections. 
 

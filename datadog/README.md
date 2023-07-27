@@ -5,9 +5,50 @@ This directory contains the necessary configuration files and scripts to set up 
 ## Directory Structure
 
 - `checks.d/`: Contains custom Python scripts for Datadog's Agent to execute and collect metrics.
-    - `toxicstack.py`: This is the custom check script for the ToxicStack application. It calculates the response time from the ToxicStack application's `/get` endpoint.
+    - `toxicstack.py`: This is the custom check script for the ToxicStack application. It calculates the response time and close time from the ToxicStack application's `/get` endpoint.
 - `conf.d/`: Contains configuration data for the custom check scripts.
     - `toxicstack.d/conf.yaml`: This file provides the configuration for the custom check script.
+ 
+## Exposed metrics
+
+The `toxicstack.py` script is sending two metrics to Datadog:
+
+1. `toxicstack.response_time`: This metric measures the time it takes to receive a response from the service when making a GET request. The time is measured in seconds. The lower the response time, the faster the service is responding. 
+
+    Toxiproxy's "latency" toxic can be used to increase this response time. The "latency" toxic adds a delay to all data going through the proxy, simulating a high-latency network connection. By increasing the latency, you can observe how the `toxicstack.response_time` metric increases in response.
+
+    Here's an example of how you might configure a latency toxic in Toxiproxy:
+    ```shell
+    curl -X POST http://localhost:8474/proxies/httpbin_proxy/toxics \
+      -d '{
+            "type": "latency",
+            "name": "latency_toxic",
+            "attributes": {
+                "latency": 3000,
+                "jitter": 100
+            }
+          }'
+    ```
+    This command adds a latency toxic to the "httpbin_proxy" proxy, introducing a delay of 3000 milliseconds (or 3 seconds) to all traffic passing through the proxy. The "jitter" attribute adds a random variation to the latency, which can make the network delay more realistic.
+
+2. `toxicstack.close_time`: This metric measures the time it takes to close the connection after receiving the response from the service. The time is measured in seconds. The lower the close time, the faster the service is able to close the connection.
+
+    Toxiproxy's "slow_close" toxic can be used to increase this close time. The "slow_close" toxic delays the closing of the connection, simulating a service that is slow to acknowledge the completion of a request.
+
+    Here's an example of how you might configure a slow_close toxic in Toxiproxy:
+    ```shell
+    curl -X POST http://localhost:8474/proxies/httpbin_proxy/toxics \
+      -d '{
+            "type": "slow_close",
+            "name": "slow_close_toxic",
+            "attributes": {
+                "delay": 3000
+            }
+          }'
+    ```
+    This command adds a slow_close toxic to the "httpbin_proxy" proxy, introducing a delay of 3000 milliseconds (or 3 seconds) to the closing of the connection. As a result, the `toxicstack.close_time` metric should increase.
+
+Both of these metrics can be useful for monitoring the performance of your services under different network conditions. For example, you might want to see how your service performs when network latency is high, or when connections are slow to close. By adjusting the toxics in Toxiproxy, you can simulate these conditions and observe their impact on your service's performance.
 
 ## Setup Instructions
 

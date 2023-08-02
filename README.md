@@ -23,71 +23,31 @@ podman-compose up -d
 
 **1. Create the proxy if it doesn't exist**
 
-First, let's see if the proxy already exists:
-
 ```bash
-curl -s http://localhost:8474/proxies | grep httpbin_proxy
+curl -X POST http://localhost:8474/proxies -d '{
+    "name": "httpbin_proxy",
+    "listen": "[::]:8001",
+    "upstream": "httpbin:80"
+}'
 ```
 
-If this command returns nothing, it means the proxy doesn't exist and we can create it:
+**2. Add a latency toxic**
 
 ```bash
-curl -X POST http://localhost:8474/proxies \
-     -d '{
-         "name": "httpbin_proxy",
-         "listen": "[::]:8001",
-         "upstream": "httpbin:80",
-         "enabled": true,
-         "toxics": [{
-             "type": "latency",
-             "attributes": {
-                 "latency": 5000,
-                 "jitter": 0
-             },
-             "name": "latency_toxic",
-             "stream": "downstream",
-             "toxicity": 1.0
-         }]
-     }'
+curl -X POST http://localhost:8474/proxies/httpbin_proxy/toxics -d '{
+    "name": "latency_toxic",
+    "type": "latency",
+    "stream": "downstream",
+    "attributes": {"latency": 5000}
+}'
 ```
 
-**2. Update the proxy if it exists**
+**3. Delete the toxi**
 
-First, let's check if the proxy exists:
 
 ```bash
-curl -s http://localhost:8474/proxies | grep httpbin_proxy
+curl -X DELETE http://localhost:8474/proxies/httpbin_proxy/toxics/latency_toxic
 ```
-
-If this command returns something, it means the proxy exists and we can update it:
-
-```bash
-curl -X POST http://localhost:8474/proxies/httpbin_proxy \
-     -d '{
-         "enabled": true,
-         "toxics": [{
-             "type": "latency",
-             "attributes": {
-                 "latency": 5000,
-                 "jitter": 0
-             },
-             "name": "latency_toxic",
-             "stream": "downstream",
-             "toxicity": 1.0
-         }]
-     }'
-```
-
-**3. Delete the proxy**
-
-To delete the proxy, you can use the following command:
-
-```bash
-curl -X DELETE http://localhost:8474/proxies/httpbin_proxy
-```
-
-The `httpbin_proxy` proxy should now be removed. You can verify this by trying to get a list of all proxies again. The `httpbin_proxy` proxy should no longer be in the list.
-
 
 **4. List proxies**
 
